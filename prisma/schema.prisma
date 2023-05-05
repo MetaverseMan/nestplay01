@@ -1,0 +1,620 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model airdrops {
+  id               BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at       DateTime?
+  updated_at       DateTime?
+  deleted_at       DateTime?
+  missionid        BigInt?
+  participateid    String?   @db.VarChar(255)
+  tokenaddress     String?   @db.VarChar(255)
+  tokenlogourl     String?   @db.VarChar(255)
+  perairdropreward String?   @db.VarChar(255)
+  shares           BigInt?
+  ticketprice      String?   @db.VarChar(255)
+  deposit          Boolean?
+  rewarded         Boolean?
+  contract         String?   @db.VarChar(255)
+  networkid        BigInt?
+  project_address  String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_airdrops_deleted_at")
+}
+
+model all_participate_records {
+  id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at    DateTime?
+  updated_at    DateTime?
+  deleted_at    DateTime?
+  missionid     BigInt?
+  userid        BigInt?
+  participateid String?   @db.VarChar(255)
+  type          String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_all_participate_records_deleted_at")
+}
+
+model chains {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  chainid    String?   @db.VarChar(255)
+  name       String?   @db.VarChar(255)
+  icon_url   String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_chains_deleted_at")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model comments {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  spaceid    String?   @db.LongText
+  userid     String?   @db.LongText
+  content    String?   @db.LongText
+
+  @@index([deleted_at], map: "idx_comments_deleted_at")
+}
+
+model complete_task_users {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  missionid  String?   @db.VarChar(255)
+  userid     String?   @db.VarChar(255)
+  address    String?   @db.VarChar(255)
+  claimable  Boolean?
+  claimed    Boolean?
+
+  @@index([deleted_at], map: "idx_complete_task_users_deleted_at")
+}
+
+model configs {
+  id     BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  name   String? @db.VarChar(255)
+  value  String? @db.LongText
+  remark String? @db.VarChar(255)
+}
+
+model discords {
+  id            BigInt           @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String?          @db.VarChar(255)
+  name          String?          @db.VarChar(255)
+  url           String?          @db.VarChar(255)
+  type          String?          @default("Discord")
+  status        discords_status?
+  serverid      String?          @db.VarChar(255)
+}
+
+model favorites {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  userid     BigInt?
+  missionid  BigInt?
+
+  @@index([deleted_at], map: "idx_favorites_deleted_at")
+}
+
+model follow_twitters {
+  id              BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid       BigInt?
+  participateid   String? @db.VarChar(255)
+  twitterusername String? @db.VarChar(255)
+  type            String? @default("FollowTwitter")
+}
+
+model gate3dics {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  parent     String?   @db.VarChar(255)
+  child      String?   @db.VarChar(255)
+  name       String?   @db.VarChar(255)
+  value      String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_gate3dics_deleted_at")
+}
+
+model holding_nfts {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String? @db.VarChar(255)
+  blockchain    String? @db.VarChar(255)
+  symbol        String? @db.VarChar(255)
+  threshold     String? @db.VarChar(255)
+  contract      String? @db.VarChar(255)
+  type          String? @default("HoldingNft")
+}
+
+model holding_tokens {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String? @db.VarChar(255)
+  blockchain    String? @db.VarChar(255)
+  symbol        String? @db.VarChar(255)
+  threshold     String? @db.VarChar(255)
+  contract      String? @db.VarChar(255)
+  type          String? @default("HoldingToken")
+}
+
+model interacts {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String? @db.VarChar(255)
+  title         String? @db.VarChar(255)
+  url           String? @db.VarChar(255)
+  blockchain    String? @db.VarChar(255)
+  contract      String? @db.VarChar(255)
+  type          String? @default("Interact")
+}
+
+model leases {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  missionid  BigInt?
+  end_time   BigInt?
+  duration   BigInt?
+  opened     Boolean?
+
+  @@index([deleted_at], map: "idx_leases_deleted_at")
+}
+
+model like_twitters {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String? @db.VarChar(255)
+  title         String? @db.VarChar(255)
+  twitterurl    String? @db.VarChar(255)
+  type          String? @default("LikeTwitter")
+}
+
+model lucky_users {
+  id                  BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at          DateTime?
+  updated_at          DateTime?
+  deleted_at          DateTime?
+  missionid           String?   @db.VarChar(255)
+  userid              BigInt?
+  nft_rewardid        String?   @db.VarChar(255)
+  token_rewardid      String?   @db.VarChar(255)
+  token_reward_amount BigInt?
+  reward_type         String?   @db.VarChar(255)
+  claimed             Boolean?
+
+  @@index([deleted_at], map: "idx_lucky_users_deleted_at")
+}
+
+model messages {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at  DateTime?
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  projectid   BigInt?
+  userid      BigInt?
+  missionid   BigInt?
+  missionname String?   @db.VarChar(255)
+  read        Boolean?  @default(false)
+  type        String?   @db.VarChar(255)
+  content     String?   @db.VarChar(255)
+  messageid   BigInt?
+
+  @@index([deleted_at], map: "idx_messages_deleted_at")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model missions {
+  id          BigInt          @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at  DateTime?
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  projectid   BigInt?
+  missionid   BigInt?
+  title       String?         @db.VarChar(255)
+  description String?         @db.VarChar(255)
+  starttime   DateTime?       @db.Timestamp(0)
+  endtime     DateTime?       @db.Timestamp(0)
+  type        String?         @db.VarChar(255)
+  viewable    Boolean?        @default(false)
+  chainid     Int?
+  contract    String?         @db.VarChar(255)
+  banner      String?         @db.VarChar(255)
+  status      missions_status @default(EMPTY_ENUM_VALUE)
+  reward_type Boolean?        @default(false)
+
+  @@index([deleted_at], map: "idx_missions_deleted_at")
+}
+
+model missions_copy1 {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at  DateTime?
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  projectid   BigInt?
+  missionid   BigInt?
+  title       String?   @db.VarChar(255)
+  description String?   @db.VarChar(255)
+  starttime   DateTime? @db.Timestamp(0)
+  endtime     DateTime? @db.Timestamp(0)
+  type        String?   @db.VarChar(255)
+  viewable    Boolean?  @default(false)
+  chainid     Int?
+  contract    String?   @db.VarChar(255)
+  banner      String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_missions_deleted_at")
+}
+
+model nft_models {
+  id               BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at       DateTime?
+  updated_at       DateTime?
+  deleted_at       DateTime?
+  projectid        String?   @db.LongText
+  modelid          String?   @db.LongText
+  name             String?   @db.LongText
+  symbol           String?   @db.LongText
+  network          String?   @db.LongText
+  transferable     Boolean?
+  transaction_hash String?   @db.LongText
+  deployed         Boolean?
+  address          String?   @db.LongText
+  base_json_url    String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_nft_models_deleted_at")
+}
+
+model nft_models_copy1 {
+  id               BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at       DateTime?
+  updated_at       DateTime?
+  deleted_at       DateTime?
+  projectid        String?   @db.VarChar(255)
+  modelid          String?   @db.VarChar(255)
+  name             String?   @db.VarChar(255)
+  symbol           String?   @db.VarChar(255)
+  network          String?   @db.VarChar(255)
+  transferable     Boolean?
+  transaction_hash String?   @db.LongText
+  deployed         Boolean?
+  address          String?   @db.LongText
+  base_json_url    String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_nft_models_deleted_at")
+}
+
+model nft_rewards {
+  id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at    DateTime?
+  updated_at    DateTime?
+  deleted_at    DateTime?
+  missionid     String?   @db.LongText
+  modelid       String?   @db.LongText
+  rewardid      String?   @db.LongText
+  alias         String?   @db.LongText
+  offset_start  BigInt?
+  offset_end    BigInt?
+  imageurl      String?   @db.LongText
+  uploaded      Boolean?
+  json_base_url String?   @db.LongText
+
+  @@index([deleted_at], map: "idx_nft_rewards_deleted_at")
+}
+
+model postcolors {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  name       String?   @db.VarChar(255)
+  color      String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_postcolors_deleted_at")
+}
+
+model project_subscriptions {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at  DateTime?
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  projectid   String?   @db.VarChar(255)
+  projectname String?   @db.VarChar(255)
+  userid      String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_project_subscriptions_deleted_at")
+}
+
+model projectfans {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at  DateTime?
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  projectid   BigInt?
+  projectname String?   @db.VarChar(255)
+  fanuserid   BigInt?
+
+  @@index([deleted_at], map: "idx_projectfans_deleted_at")
+  @@index([fanuserid], map: "userid")
+}
+
+model projects {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at   DateTime?
+  updated_at   DateTime?
+  deleted_at   DateTime?
+  userid       BigInt?
+  address      String?   @db.VarChar(50)
+  projectid    BigInt?
+  name         String?   @db.VarChar(50)
+  logourl      String?   @db.VarChar(255)
+  introduction String?   @db.VarChar(255)
+  website      String?   @db.VarChar(255)
+  status       String?   @db.VarChar(20)
+  email        String?   @db.VarChar(20)
+  twitter      String?   @db.VarChar(255)
+  telegram     String?   @db.VarChar(255)
+  discord      String?   @db.VarChar(255)
+  likes        BigInt?
+  github       String?   @db.VarChar(255)
+  fans         BigInt?
+  settled      Boolean?  @default(false)
+  bannerurl    String?   @db.VarChar(255)
+  launched     Boolean?  @default(false)
+
+  @@index([deleted_at], map: "idx_projects_deleted_at")
+}
+
+model questions {
+  id            BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String?           @db.VarChar(255)
+  title         String?           @db.VarChar(255)
+  question      String?           @db.VarChar(255)
+  type          String?           @default("AnswerQuestion")
+  answer        String?           @db.VarChar(255)
+  status        questions_status?
+}
+
+model retweets {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String? @db.VarChar(255)
+  title         String? @db.VarChar(255)
+  twitterurl    String? @db.VarChar(255)
+  type          String? @default("Retweet")
+}
+
+model rewards {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  rewardid     String?   @db.VarChar(255)
+  missionid    BigInt?
+  blockchain   String?   @db.VarChar(255)
+  symbol       String?   @db.VarChar(255)
+  rewardamount String?   @db.VarChar(255)
+  contract     String?   @db.VarChar(255)
+  shares       BigInt?
+  time         DateTime? @db.Timestamp(0)
+  type         String?   @db.VarChar(255)
+  onchain      Boolean?
+  networkid    String?   @db.VarChar(255)
+  total_value  BigInt?
+}
+
+model rpcs {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  chainid    String?   @db.VarChar(255)
+  rpcserver  String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_rpcs_deleted_at")
+}
+
+model space_subscriptions {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  spaceid    String?   @db.VarChar(255)
+  spacename  String?   @db.VarChar(255)
+  userid     String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_space_subscriptions_deleted_at")
+}
+
+model spacefans {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  spaceid    BigInt?
+  spacename  String?   @db.VarChar(50)
+  fanuserid  BigInt?
+
+  @@index([deleted_at], map: "idx_spacefans_deleted_at")
+}
+
+model spaces {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at   DateTime?
+  updated_at   DateTime?
+  deleted_at   DateTime?
+  userid       BigInt?
+  spaceid      BigInt?
+  address      String?   @db.VarChar(42)
+  spacename    String?   @db.VarChar(50)
+  logourl      String?   @db.VarChar(255)
+  introduction String?   @db.VarChar(255)
+  fans         BigInt?
+  personalcode String?   @db.VarChar(255)
+  invitedcode  String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_spaces_deleted_at")
+}
+
+model teams {
+  id              BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at      DateTime?
+  updated_at      DateTime?
+  deleted_at      DateTime?
+  owner_projectid String?   @db.VarChar(255)
+  share_userid    String?   @db.VarChar(255)
+  share_address   String?   @db.VarChar(255)
+  grant           String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_teams_deleted_at")
+}
+
+model telegrams {
+  id            BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String?           @db.VarChar(50)
+  name          String?           @db.VarChar(20)
+  url           String?           @db.VarChar(255)
+  type          String?           @default("Telegram")
+  status        telegrams_status?
+}
+
+model token_rewards {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at  DateTime?
+  updated_at  DateTime?
+  deleted_at  DateTime?
+  missionid   String?   @db.LongText
+  rewardid    String?   @db.LongText
+  total_value String?   @db.LongText
+  shares      String?   @db.LongText
+  token_kind  String?   @db.LongText
+  chainid     String?   @db.LongText
+
+  @@index([deleted_at], map: "idx_token_rewards_deleted_at")
+}
+
+model tokens {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  name       String?   @db.VarChar(255)
+  symbol     String?   @db.VarChar(255)
+  icon_url   String?   @db.VarChar(255)
+  chainid    String?   @db.VarChar(255)
+  address    String?   @db.VarChar(255)
+  attribute  String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_tokens_deleted_at")
+}
+
+model transaction_counts {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String  @unique(map: "participateid_UNIQUE")
+  networkid     BigInt?
+  count         BigInt?
+  type          String? @default("TransactionCount")
+}
+
+model user_records {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime?
+  updated_at DateTime?
+  deleted_at DateTime?
+  address    String?   @db.VarChar(255)
+  network    String?   @db.VarChar(255)
+  message    String?   @db.VarChar(255)
+  signature  String?   @db.VarChar(255)
+  signtime   String?   @db.VarChar(255)
+
+  @@index([deleted_at], map: "idx_user_records_deleted_at")
+}
+
+model users {
+  id              BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at      DateTime?
+  updated_at      DateTime?
+  deleted_at      DateTime?
+  userid          BigInt?
+  address         String?   @db.VarChar(255)
+  spaceid         BigInt?
+  projectid       BigInt?
+  twitterid       String?   @db.VarChar(255)
+  twittername     String?   @db.VarChar(255)
+  twitterurl      String?   @db.VarChar(255)
+  twitter_avatar  String?   @db.VarChar(255)
+  discordid       String?   @db.VarChar(255)
+  discordname     String?   @db.VarChar(255)
+  discordurl      String?   @db.VarChar(255)
+  discord_avatar  String?   @db.VarChar(255)
+  telegramid      String?   @db.VarChar(255)
+  telegramname    String?   @db.VarChar(255)
+  telegramurl     String?   @db.VarChar(255)
+  telegram_avatar String?   @db.VarChar(255)
+  name            String?   @db.VarChar(255)
+  label           String?   @db.VarChar(255)
+  introduction    String?   @db.VarChar(255)
+  avatar          String?   @db.VarChar(512)
+  cover           String?   @db.LongText
+  project_apply   Boolean?
+
+  @@index([deleted_at], map: "idx_users_deleted_at")
+}
+
+model visit_websites {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String? @db.VarChar(255)
+  name          String? @db.VarChar(255)
+  url           String? @db.VarChar(255)
+  type          String? @default("VisitWebsite")
+}
+
+model youtubes {
+  id            BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  missionid     BigInt?
+  participateid String? @db.VarChar(255)
+  url           String? @db.VarChar(255)
+  type          String? @default("Youtube")
+  status        String? @db.LongText
+}
+
+enum discords_status {
+  Done
+  Todo
+  EMPTY_ENUM_VALUE @map("")
+}
+
+enum telegrams_status {
+  Done
+  Todo
+  EMPTY_ENUM_VALUE @map("")
+}
+
+enum questions_status {
+  Done
+  Todo
+  EMPTY_ENUM_VALUE @map("")
+}
+
+enum missions_status {
+  EMPTY_ENUM_VALUE @map("")
+  Ended
+  Active
+  Not_Start        @map("Not Start")
+}
